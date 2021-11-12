@@ -21,10 +21,7 @@ environment:
     RDP: "no"
 
 install:
-  # Install Maven
-  - set MVN_VERSION=3.8.3
-  - set PATH=%PATH%;C:\bin\apache-maven-%MVN_VERSION%\bin
-  - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
+  - set PATH=%PATH%
 
 build_script:
 
