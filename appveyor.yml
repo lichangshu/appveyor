@@ -26,7 +26,8 @@ install:
 build_script:
 
   # Build Java
-  - cd maven & mvn -v
+  - cd maven
+  - mvn -v
   - mvn clean install -Dmaven.test.failure.ignore=true -Dplatform.dependency=false
 
 on_failure:
