@@ -1,6 +1,16 @@
-version: 0.1.{build}
+#     copy : from https://github.com/G-Node/nix-java/blob/master/appveyor.yml
+#      doc : https://linuxtut.com/en/1b97b0d36c81785522a8/
+# software : https://www.appveyor.com/docs/windows-images-software/#java
 
-os: Visual Studio 2014 CTP4
+# Branches
+
+branches:
+  only:
+  - master
+image: ubuntu
+
+# version: 0.1.{build}
+# os: Visual Studio 2014 CTP4
 
 environment:
   matrix:
@@ -10,18 +20,17 @@ environment:
     JAVA_HOME: C:\Program Files\Java\jdk1.8.0
     RDP: "no"
 
-install:
-
-  # Install Maven
-  - set MVN_VERSION=3.6.0
-  - set PATH=%PATH%;C:\bin\apache-maven-%MVN_VERSION%\bin
-  - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
+#install:
+#  # Install Maven
+#  - set MVN_VERSION=3.8.3
+#  - set PATH=%PATH%;C:\bin\apache-maven-%MVN_VERSION%\bin
+#  - if not exist "C:\bin\apache-maven-%MVN_VERSION%\bin\*.*" (echo Maven %MVN_VERSION% not installed, so install it & cinst maven -Version %MVN_VERSION%) else (echo  Maven %MVN_VERSION% already installed)
 
 build_script:
 
-  # Build NIX Java bindings
+  # Build Java
   - cd maven
-  - mvn clean package -Dmaven.test.failure.ignore=true -Dplatform.dependency=false
+  - mvn clean install -Dmaven.test.failure.ignore=true -Dplatform.dependency=false
 
 on_failure:
 
@@ -29,14 +38,3 @@ on_failure:
   - if exist *.log type *.log
 
 test_script: []
-
-cache:
-  - C:\bin\apache-maven-3.6.0
-  - C:\Users\appveyor\.m2
-
-
-on_finish:
-  - ps: |
-      if ($env:RDP -eq "yes") {
-          $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-      }
